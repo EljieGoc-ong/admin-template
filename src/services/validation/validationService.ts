@@ -10,7 +10,12 @@ class ValidationService {
   isValidEmail(email: string): boolean {
     if (!email) return false;
     
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // Prevent ReDoS by limiting input length (RFC 5321)
+    if (email.length > 254) return false;
+    
+    // More specific regex pattern that's resistant to backtracking
+    // Uses bounded quantifiers and specific character classes
+    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
     return emailRegex.test(email);
   }
 
@@ -99,7 +104,15 @@ class ValidationService {
    */
   sanitizeString(value: string): string {
     if (!value) return '';
-    return value.replace(/<[^>]*>/g, '');
+    
+    // Prevent ReDoS by limiting input length
+    if (value.length > 10000) {
+      value = value.substring(0, 10000);
+    }
+    
+    // Use bounded quantifier to prevent catastrophic backtracking
+    // Limit tag content to 1000 characters max
+    return value.replace(/<[^>]{0,1000}>/g, '');
   }
 
   /**
