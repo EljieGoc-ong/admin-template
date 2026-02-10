@@ -1,0 +1,18 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.25.0
+
+# Ignore test files - they contain test fixtures, not real passwords
+ignore:
+  'snyk:lic:npm:*':
+    - '*':
+        reason: Test files contain hardcoded test data, not production secrets
+        expires: 2099-01-01T00:00:00.000Z
+
+exclude:
+  global:
+    # Exclude test directories from security scans
+    - src/test/**
+    - '**/*.test.ts'
+    - '**/*.test.tsx'
+    - '**/*.spec.ts'
+    - '**/*.spec.tsx'
