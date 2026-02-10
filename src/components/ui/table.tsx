@@ -28,6 +28,7 @@ import { cn } from "@/lib/utils";
 const Table = React.forwardRef<HTMLTableElement, React.HTMLAttributes<HTMLTableElement>>(
   ({ className, ...props }, ref) => (
     <div className="relative w-full overflow-auto">
+      {/* NOSONAR: S5256 - Composable component, headers added via TableHeader/TableHead child components */}
       <table 
         ref={ref} 
         {...props}
