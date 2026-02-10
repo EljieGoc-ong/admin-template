@@ -20,10 +20,6 @@ describe('ValidationService', () => {
       expect(validationService.isValidEmail('invalid@domain')).toBe(false);
       expect(validationService.isValidEmail('')).toBe(false);
     });
-
-    it('should return false for empty or null values', () => {
-      expect(validationService.isValidEmail('')).toBe(false);
-    });
   });
 
   describe('isValidPassword', () => {

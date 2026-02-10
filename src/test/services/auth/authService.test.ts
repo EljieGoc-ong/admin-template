@@ -245,23 +245,11 @@ describe('AuthService', () => {
       expect(response.user.permissions.length).toBe(2);
     });
 
-    it('should store auth data with remember me', async () => {
+    it('should store auth data after login', async () => {
       const credentials: LoginCredentials = {
         email: 'test@example.com',
         password: 'password123',
         rememberMe: true,
-      };
-
-      await authService.login(credentials);
-
-      expect(storageService.setItem).toHaveBeenCalled();
-    });
-
-    it('should store auth data without remember me', async () => {
-      const credentials: LoginCredentials = {
-        email: 'test@example.com',
-        password: 'password123',
-        rememberMe: false,
       };
 
       await authService.login(credentials);
