@@ -65,13 +65,13 @@ class AdminService {
     // return await apiClient.patch<User>(`/admin/users/${userId}`, updates);
 
     // Mock implementation
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       setTimeout(() => {
         const user = mockUsers.find(u => u.id === userId);
         if (user) {
           resolve({ ...user, ...updates });
         } else {
-          throw new Error('User not found');
+          reject(new Error('User not found'));
         }
       }, 500);
     });
