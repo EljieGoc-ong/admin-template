@@ -135,10 +135,9 @@ describe('AdminService', () => {
       metrics.forEach(metric => {
         expect(typeof metric.label).toBe('string');
         expect(typeof metric.value).toBe('string');
-        expect(typeof metric.trend).toBe('string');
-        // Note: change property might be optional depending on the mock data
-        if (metric.change !== undefined) {
-          expect(typeof metric.change).toBe('string');
+        expect(typeof metric.status).toBe('string');
+        if (metric.trend !== undefined) {
+          expect(typeof metric.trend).toBe('string');
         }
       });
     });

@@ -11,6 +11,11 @@ export default defineConfig(({ mode }) => ({
       overlay: false,
     },
   },
+  build: {
+    rollupOptions: {
+      external: ['src/test/**'],
+    },
+  },
   plugins: [],
   resolve: {
     alias: {
