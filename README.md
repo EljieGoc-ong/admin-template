@@ -268,6 +268,144 @@ npm run test -- --coverage
 
 ---
 
+## Snyk Security Scanning
+
+This project uses [Snyk](https://snyk.io/) for security vulnerability scanning and code analysis.
+
+### Prerequisites
+
+1. **Install Snyk CLI:**
+   ```bash
+   npm install -g snyk
+   ```
+
+2. **Authenticate with Snyk:**
+   ```bash
+   snyk auth
+   ```
+   This will open a browser window to authenticate with your Snyk account.
+
+### Configuration
+
+The project includes a `.snyk` policy file that configures security scanning:
+
+- **Excluded from scans:** Test files and directories (`src/test/**`, `**/*.test.ts`)
+- **Reason:** Test files contain hardcoded test fixtures and mock data, not production secrets
+
+```yaml
+# .snyk
+exclude:
+  global:
+    - src/test/**
+    - '**/*.test.ts'
+    - '**/*.test.tsx'
+    - '**/*.spec.ts'
+    - '**/*.spec.tsx'
+```
+
+### Running Snyk Scans
+
+#### Code Security Analysis
+Scan for security vulnerabilities in your code:
+
+```bash
+# Run code analysis
+snyk code test
+
+# Include ignored issues in the report
+snyk code test --include-ignores
+
+# Output results as JSON
+snyk code test --json
+
+# Output results as SARIF (for GitHub integration)
+snyk code test --sarif
+```
+
+#### Dependency Scanning
+Scan for vulnerabilities in npm packages:
+
+```bash
+# Test dependencies
+snyk test
+
+# Test and monitor (sends results to Snyk dashboard)
+snyk monitor
+
+# Test with detailed output
+snyk test --all-projects
+```
+
+### Common Commands
+
+```bash
+# Run security scan
+snyk code test
+
+# View all issues including ignored ones
+snyk code test --include-ignores
+
+# Test specific severity levels
+snyk code test --severity-threshold=high
+
+# Generate HTML report
+snyk code test --sarif-file-output=snyk-report.sarif
+
+# Check for open source vulnerabilities
+snyk test
+
+# Fix vulnerabilities automatically (where possible)
+snyk fix
+```
+
+### CI/CD Integration
+
+Add Snyk to your CI/CD pipeline:
+
+```yaml
+# GitHub Actions example
+- name: Run Snyk Security Scan
+  uses: snyk/actions/node@master
+  env:
+    SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+  with:
+    command: code test
+```
+
+### Ignoring Issues
+
+To ignore specific vulnerabilities:
+
+1. **Via Snyk Web UI:** Visit https://app.snyk.io/ and manage ignores
+2. **Via Policy File:** Add to `.snyk` file (for path-based exclusions)
+3. **Via CLI:** Use `snyk ignore --id=<issue-id>` for specific findings
+
+### Expected Results
+
+With the current configuration:
+- ✅ **Total issues: 0** (test files excluded)
+- ✅ All test fixtures and mock data ignored
+- ✅ Production code scanned for vulnerabilities
+
+### Troubleshooting
+
+**Issue:** "id is a required field for `snyk ignore`"
+- **Solution:** Use `.snyk` policy file for directory exclusions instead of CLI
+
+**Issue:** Test files showing hardcoded password warnings
+- **Solution:** Already configured in `.snyk` - test directory is excluded
+
+**Issue:** Authentication errors
+- **Solution:** Run `snyk auth` to re-authenticate
+
+### Documentation
+
+- [Snyk CLI Documentation](https://docs.snyk.io/snyk-cli)
+- [Snyk Code Documentation](https://docs.snyk.io/scan-with-snyk/snyk-code)
+- [.snyk Policy File](https://docs.snyk.io/manage-risk/policies/the-.snyk-file)
+
+## Snyk 
+
 ## 🌐 Browser Support
 
 - Chrome (latest)
