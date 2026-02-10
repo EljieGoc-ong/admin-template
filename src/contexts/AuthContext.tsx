@@ -1,50 +1,114 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { authService, LoginCredentials, SignupCredentials } from "@/services";
+import { Permission } from "@/types/rbac";
+
+interface User {
+  id: string;
+  email: string;
+  name?: string;
+  permissions: Permission[]; // Array of "feature:action" strings from backend
+}
 
 interface AuthContextType {
   isAuthenticated: boolean;
+  user: User | null;
   userEmail: string | null;
-  login: (email: string, password: string) => boolean;
-  signup: (email: string, password: string) => boolean;
-  logout: () => void;
+  userName: string | null;
+  login: (email: string, password: string, rememberMe?: boolean) => Promise<boolean>;
+  signup: (email: string, password: string) => Promise<boolean>;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [userName, setUserName] = useState<string | null>(null);
 
   useEffect(() => {
-    const stored = localStorage.getItem("auth");
-    if (stored) {
-      const { email } = JSON.parse(stored);
+    // Check if user is already authenticated
+    const isAuth = authService.isAuthenticated();
+    const currentUser = authService.getCurrentUser();
+    
+    if (isAuth && currentUser) {
+      const userData: User = {
+        id: currentUser.id,
+        email: currentUser.email,
+        name: currentUser.name,
+        permissions: currentUser.permissions || []
+      };
+      
       setIsAuthenticated(true);
-      setUserEmail(email);
+      setUser(userData);
+      setUserEmail(currentUser.email);
+      setUserName(currentUser.name || null);
     }
   }, []);
 
-  const login = (email: string, _password: string) => {
-    localStorage.setItem("auth", JSON.stringify({ email }));
-    setIsAuthenticated(true);
-    setUserEmail(email);
-    return true;
+  const login = async (email: string, password: string, rememberMe?: boolean): Promise<boolean> => {
+    try {
+      const credentials: LoginCredentials = { email, password, rememberMe };
+      const response = await authService.login(credentials);
+      
+      const userData: User = {
+        id: response.user.id,
+        email: response.user.email,
+        name: response.user.name,
+        permissions: response.user.permissions || []
+      };
+      
+      setIsAuthenticated(true);
+      setUser(userData);
+      setUserEmail(response.user.email);
+      setUserName(response.user.name || null);
+      
+      return true;
+    } catch (error) {
+      console.error("Login error:", error);
+      return false;
+    }
   };
 
-  const signup = (email: string, _password: string) => {
-    localStorage.setItem("auth", JSON.stringify({ email }));
-    setIsAuthenticated(true);
-    setUserEmail(email);
-    return true;
+  const signup = async (email: string, password: string): Promise<boolean> => {
+    try {
+      const credentials: SignupCredentials = { email, password };
+      const response = await authService.signup(credentials);
+      
+      const userData: User = {
+        id: response.user.id,
+        email: response.user.email,
+        name: response.user.name,
+        permissions: response.user.permissions || []
+      };
+      
+      setIsAuthenticated(true);
+      setUser(userData);
+      setUserEmail(response.user.email);
+      setUserName(response.user.name || null);
+      
+      return true;
+    } catch (error) {
+      console.error("Signup error:", error);
+      return false;
+    }
   };
 
-  const logout = () => {
-    localStorage.removeItem("auth");
-    setIsAuthenticated(false);
-    setUserEmail(null);
+  const logout = async (): Promise<void> => {
+    try {
+      await authService.logout();
+      setIsAuthenticated(false);
+      setUser(null);
+      setUserEmail(null);
+      setUserName(null);
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, userEmail, login, signup, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, user, userEmail, userName, login, signup, logout }}>
       {children}
     </AuthContext.Provider>
   );

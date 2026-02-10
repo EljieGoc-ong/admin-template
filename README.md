@@ -1,73 +1,312 @@
-# Welcome to your Lovable project
+# Admin Dashboard
 
-## Project info
+A modern, feature-rich admin dashboard built with React, TypeScript, and comprehensive Role-Based Access Control (RBAC).
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+---
 
-## How can I edit this code?
+## ✨ Features
 
-There are several ways of editing your application.
+- 🔐 **Role-Based Access Control** - 5-tier permission system
+- 🎨 **Modern UI** - Built with Tailwind CSS and Shadcn UI
+- 📊 **Dashboard Analytics** - Real-time system monitoring
+- 👥 **User Management** - Complete user CRUD with roles
+- 🛡️ **Security First** - Permission-based UI and route protection
+- 🎯 **Type-Safe** - Full TypeScript coverage
+- 🏗️ **Clean Architecture** - Services layer for business logic
+- 📱 **Responsive** - Mobile-first design
 
-**Use Lovable**
+---
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+## 🚀 Quick Start
 
-Changes made via Lovable will be committed automatically to this repo.
+### Prerequisites
 
-**Use your preferred IDE**
+- Node.js 18+ or Bun
+- Git
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Installation
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+```bash
+# Clone the repository
+git clone <repository-url>
+cd admin-template
 
-Follow these steps:
+# Install dependencies
+npm install
+# or
+bun install
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start development server
 npm run dev
+# or
+bun dev
 ```
 
-**Edit a file directly in GitHub**
+The application will be available at `http://localhost:8080`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Test Login
 
-**Use GitHub Codespaces**
+Use these email patterns to test different roles:
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+| Email | Role | Access Level |
+|-------|------|--------------|
+| `superadmin@example.com` | Super Admin | Full access |
+| `admin@example.com` | Admin | Manage users & settings |
+| `manager@example.com` | Manager | Users & reports |
+| `user@example.com` | User | Basic dashboards |
+| `viewer@example.com` | Viewer | Read-only |
 
-## What technologies are used for this project?
+*Password: any (minimum 6 characters)*
 
-This project is built with:
+---
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## 📚 Documentation
 
-## How can I deploy this project?
+Comprehensive documentation is available in the [`docs/`](./docs) directory:
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+- **[Documentation Index](./docs/README.md)** - Start here for complete navigation
+- **[RBAC System](./docs/PERMISSION_BASED_RBAC.md)** - Permission-based access control guide
+- **[GraphQL Integration](./docs/GRAPHQL_INTEGRATION.md)** - Apollo Client & GraphQL setup
 
-## Can I connect a custom domain to my Lovable project?
+---
 
-Yes, you can!
+## 🏗️ Project Structure
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+```
+admin-template/
+├── src/
+│   ├── pages/              # Page components
+│   ├── components/         # Reusable UI components
+│   │   ├── admin/         # Admin-specific components
+│   │   ├── auth/          # Authentication components
+│   │   ├── guards/        # Permission guards
+│   │   └── ui/            # Base UI components (Shadcn)
+│   ├── services/          # Business logic layer
+│   │   ├── api/           # API client
+│   │   ├── auth/          # Authentication service
+│   │   ├── rbac/          # RBAC service
+│   │   ├── admin/         # Admin operations
+│   │   ├── graphql/       # GraphQL queries, mutations
+│   │   ├── validation/    # Validation utilities
+│   │   └── storage/       # Storage service
+│   ├── contexts/          # React contexts
+│   ├── hooks/             # Custom hooks
+│   ├── types/             # TypeScript definitions
+│   ├── config/            # Configuration files
+│   │   └── apollo.ts      # Apollo Client config
+│   ├── data/              # Mock data
+│   └── lib/               # Utility functions
+├── docs/                  # Documentation
+└── public/                # Static assets
+```
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+---
+
+## 🎭 Role System
+
+### Role Hierarchy
+
+```
+Super Admin (100) → Full system access
+    ↓
+Admin (80) → Manage users, settings, reports
+    ↓
+Manager (60) → Team management, reports
+    ↓
+User (40) → Standard access
+    ↓
+Viewer (20) → Read-only
+```
+
+See [RBAC Documentation](./docs/RBAC_DOCUMENTATION.md) for detailed permissions.
+
+---
+
+## 🛠️ Tech Stack
+
+### Core
+- **React 18** - UI library
+- **TypeScript** - Type safety
+- **Vite** - Build tool
+- **React Router** - Routing
+
+### UI
+- **Tailwind CSS** - Styling
+- **Shadcn UI** - Component library
+- **Radix UI** - Unstyled components
+- **Lucide React** - Icons
+
+### State & Data
+- **React Context** - State management
+- **React Query** - Server state
+- **Apollo Client** - GraphQL client
+- **Zod** - Schema validation
+
+### Development
+- **ESLint** - Linting
+- **Vitest** - Testing
+- **TypeScript ESLint** - TS linting
+
+---
+
+## 📜 Available Scripts
+
+```bash
+# Development
+npm run dev              # Start dev server
+npm run build            # Production build
+npm run build:dev        # Development build
+npm run preview          # Preview production build
+
+# Code Quality
+npm run lint             # Run ESLint
+npm run test             # Run tests
+npm run test:watch       # Run tests in watch mode
+```
+
+---
+
+## 🔑 Key Features
+
+### Authentication
+- Login/Signup with validation
+- Remember me functionality
+- Password strength checking
+- Secure token storage
+- Auto logout on session expiry
+
+### Authorization (RBAC)
+- 5-tier role hierarchy
+- Fine-grained permissions
+- Resource-based access control
+- Route protection
+- UI element filtering
+- Permission guards
+
+### User Management
+- User CRUD operations
+- Role assignment
+- Activity tracking
+- Status management
+- Permission override
+
+### Admin Dashboard
+- System health monitoring
+- User activity logs
+- Performance metrics
+- Database management
+- System settings
+
+### Security
+- Role-based access control
+- Permission validation
+- Secure route protection
+- Activity audit trail
+- Session management
+
+---
+
+## 🎨 UI Components
+
+Built with Shadcn UI, includes:
+- Buttons, Inputs, Forms
+- Cards, Modals, Dialogs
+- Tables, Badges, Avatars
+- Tabs, Accordions, Tooltips
+- Dropdowns, Selects, Checkboxes
+- And 40+ more components
+
+---
+
+## 🔐 Security
+
+### Client-Side
+- Permission-based UI rendering
+- Route guards
+- Role validation
+- Token management
+
+### Best Practices
+- Input validation
+- XSS prevention
+- CSRF protection ready
+- Secure storage
+- Audit logging ready
+
+⚠️ **Important:** Always validate permissions server-side in production.
+
+---
+
+## 🧪 Testing
+
+```bash
+# Run all tests
+npm run test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Run tests with coverage
+npm run test -- --coverage
+```
+
+### Test Coverage
+- Unit tests for services
+- Component tests
+- Hook tests
+- Integration tests ready
+
+---
+
+## 📈 Performance
+
+- Code splitting
+- Lazy loading routes
+- Optimized bundle size
+- Tree shaking
+- Asset optimization
+
+---
+
+## 🌐 Browser Support
+
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
+
+## 📝 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+---
+
+## 🙏 Acknowledgments
+
+- [Shadcn UI](https://ui.shadcn.com/) - Beautiful UI components
+- [Radix UI](https://www.radix-ui.com/) - Unstyled, accessible components
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
+- [React Router](https://reactrouter.com/) - Routing library
+- [Lucide Icons](https://lucide.dev/) - Beautiful icons
+
+---
+
+## 📞 Support
+
+For detailed information, please check our [documentation](./docs/README.md).
+
+---
+
+**Built with ❤️ using React, TypeScript, and modern web technologies.**

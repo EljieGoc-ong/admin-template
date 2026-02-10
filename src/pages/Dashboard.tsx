@@ -1,38 +1,20 @@
-import { useAgents } from "@/contexts/AgentContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Bot, PhoneCall, Clock, TrendingUp } from "lucide-react";
-import { Link } from "react-router-dom";
-
-function StatusBadge({ status }: { status: string }) {
-  const variant = status === "active" ? "default" : status === "error" ? "destructive" : "secondary";
-  return <Badge variant={variant} className="capitalize">{status}</Badge>;
-}
+import { Users, Activity, TrendingUp, Clock } from "lucide-react";
 
 export default function Dashboard() {
-  const { agents, callLogs } = useAgents();
-  const activeAgents = agents.filter((a) => a.status === "active").length;
-  const activeCalls = callLogs.filter((c) => c.status === "in-progress").length;
-  const todayCalls = callLogs.filter((c) => c.startedAt.startsWith("2026-02-09")).length;
-  const completedCalls = callLogs.filter((c) => c.status === "completed");
-  const avgDuration = completedCalls.length
-    ? Math.round(completedCalls.reduce((s, c) => s + c.duration, 0) / completedCalls.length)
-    : 0;
-
   const stats = [
-    { label: "Total Agents", value: agents.length, icon: Bot, accent: "text-primary" },
-    { label: "Active Calls", value: activeCalls, icon: PhoneCall, accent: "text-green-500" },
-    { label: "Calls Today", value: todayCalls, icon: TrendingUp, accent: "text-blue-400" },
-    { label: "Avg Duration", value: `${Math.floor(avgDuration / 60)}m ${avgDuration % 60}s`, icon: Clock, accent: "text-amber-400" },
+    { label: "Total Users", value: "2,543", icon: Users, accent: "text-primary" },
+    { label: "Active Sessions", value: "127", icon: Activity, accent: "text-green-500" },
+    { label: "Growth", value: "+12.5%", icon: TrendingUp, accent: "text-blue-400" },
+    { label: "Avg. Session", value: "4m 32s", icon: Clock, accent: "text-amber-400" },
   ];
-
-  const recentAgents = [...agents]
-    .sort((a, b) => new Date(b.lastActive).getTime() - new Date(a.lastActive).getTime())
-    .slice(0, 4);
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Dashboard</h1>
+      <div>
+        <h1 className="text-2xl font-bold">Dashboard</h1>
+        <p className="text-muted-foreground">Welcome to your admin dashboard</p>
+      </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((s) => (
@@ -48,36 +30,64 @@ export default function Dashboard() {
         ))}
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Recently Active Agents</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-3">
-            {recentAgents.map((agent) => (
-              <Link
-                key={agent.id}
-                to={`/agents/${agent.id}`}
-                className="flex items-center justify-between rounded-lg border border-border p-3 transition-colors hover:bg-muted/50"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10">
-                    <Bot className="h-4 w-4 text-primary" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">{agent.name}</p>
-                    <p className="text-xs text-muted-foreground">{agent.phoneNumber}</p>
-                  </div>
+      <div className="grid gap-4 md:grid-cols-2">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Recent Activity</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between rounded-lg border border-border p-3">
+                <div>
+                  <p className="text-sm font-medium">User registered</p>
+                  <p className="text-xs text-muted-foreground">john.doe@example.com</p>
                 </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-xs text-muted-foreground">{agent.totalCalls} calls</span>
-                  <StatusBadge status={agent.status} />
+                <span className="text-xs text-muted-foreground">2 min ago</span>
+              </div>
+              <div className="flex items-center justify-between rounded-lg border border-border p-3">
+                <div>
+                  <p className="text-sm font-medium">Report generated</p>
+                  <p className="text-xs text-muted-foreground">Monthly analytics</p>
                 </div>
-              </Link>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+                <span className="text-xs text-muted-foreground">15 min ago</span>
+              </div>
+              <div className="flex items-center justify-between rounded-lg border border-border p-3">
+                <div>
+                  <p className="text-sm font-medium">Settings updated</p>
+                  <p className="text-xs text-muted-foreground">System configuration</p>
+                </div>
+                <span className="text-xs text-muted-foreground">1 hour ago</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">System Status</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-sm">API Server</span>
+                <span className="text-sm font-medium text-green-500">Online</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Database</span>
+                <span className="text-sm font-medium text-green-500">Online</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Cache</span>
+                <span className="text-sm font-medium text-green-500">Online</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Storage</span>
+                <span className="text-sm font-medium text-amber-500">Degraded</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
