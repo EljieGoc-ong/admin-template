@@ -12,7 +12,6 @@ import { ReactNode } from "react";
 
 export function AppLayout({ children }: { children: ReactNode }) {
   const { logout, user } = useAuth();
-  const location = useLocation();
 
   return (
     <SidebarProvider>

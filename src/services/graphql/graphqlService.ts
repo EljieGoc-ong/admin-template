@@ -17,7 +17,7 @@ class GraphQLService {
   /**
    * Execute a query
    */
-  async query<TData = any, TVariables extends OperationVariables = OperationVariables>(
+  async query<TData = unknown, TVariables extends OperationVariables = OperationVariables>(
     query: DocumentNode,
     variables?: TVariables,
     options?: Partial<Omit<QueryOptions<TData, TVariables>, 'query' | 'variables'>>
@@ -37,7 +37,7 @@ class GraphQLService {
   /**
    * Execute a mutation
    */
-  async mutate<TData = any, TVariables extends OperationVariables = OperationVariables>(
+  async mutate<TData = unknown, TVariables extends OperationVariables = OperationVariables>(
     mutation: DocumentNode,
     variables?: TVariables,
     options?: {
@@ -63,7 +63,7 @@ class GraphQLService {
   /**
    * Watch a query (with real-time updates)
    */
-  watchQuery<TData = any, TVariables extends OperationVariables = OperationVariables>(
+  watchQuery<TData = unknown, TVariables extends OperationVariables = OperationVariables>(
     query: DocumentNode,
     variables?: TVariables,
     options?: {
@@ -95,7 +95,7 @@ class GraphQLService {
   /**
    * Write data to cache
    */
-  writeCache<TData = any>(options: {
+  writeCache<TData = unknown>(options: {
     query: DocumentNode;
     data: TData;
     variables?: OperationVariables;
@@ -106,7 +106,7 @@ class GraphQLService {
   /**
    * Read data from cache
    */
-  readCache<TData = any>(options: {
+  readCache<TData = unknown>(options: {
     query: DocumentNode;
     variables?: OperationVariables;
   }): TData | null {
@@ -116,7 +116,7 @@ class GraphQLService {
   /**
    * Subscribe to real-time updates (if your backend supports subscriptions)
    */
-  subscribe<TData = any, TVariables extends OperationVariables = OperationVariables>(
+  subscribe<TData = unknown, TVariables extends OperationVariables = OperationVariables>(
     subscription: DocumentNode,
     variables?: TVariables
   ) {

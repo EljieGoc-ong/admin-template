@@ -31,7 +31,7 @@ export function UsersListExample() {
       </CardHeader>
       <CardContent>
         <div className="space-y-2">
-          {data?.users?.nodes?.map((user: any) => (
+          {data?.users?.nodes?.map((user: { id: string; name?: string; email: string }) => (
             <div key={user.id} className="p-2 border rounded">
               <p className="font-medium">{user.name || user.email}</p>
               <p className="text-sm text-muted-foreground">{user.email}</p>

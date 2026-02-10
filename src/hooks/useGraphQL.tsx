@@ -11,14 +11,14 @@ import { graphqlService } from '@/services';
 /**
  * Custom query hook with error handling
  */
-export function useGraphQLQuery<TData = any, TVariables extends OperationVariables = OperationVariables>(
+export function useGraphQLQuery<TData = unknown, TVariables extends OperationVariables = OperationVariables>(
   query: DocumentNode,
   options?: {
     variables?: TVariables;
     skip?: boolean;
     pollInterval?: number;
     onCompleted?: (data: TData) => void;
-    onError?: (error: any) => void;
+    onError?: (error: Error) => void;
   }
 ) {
   return useQuery<TData, TVariables>(query, {
@@ -30,11 +30,11 @@ export function useGraphQLQuery<TData = any, TVariables extends OperationVariabl
 /**
  * Custom mutation hook with error handling
  */
-export function useGraphQLMutation<TData = any, TVariables extends OperationVariables = OperationVariables>(
+export function useGraphQLMutation<TData = unknown, TVariables extends OperationVariables = OperationVariables>(
   mutation: DocumentNode,
   options?: {
     onCompleted?: (data: TData) => void;
-    onError?: (error: any) => void;
+    onError?: (error: Error) => void;
     refetchQueries?: string[] | DocumentNode[];
     awaitRefetchQueries?: boolean;
   }
@@ -48,11 +48,11 @@ export function useGraphQLMutation<TData = any, TVariables extends OperationVari
 /**
  * Lazy query hook - execute query manually
  */
-export function useGraphQLLazyQuery<TData = any, TVariables extends OperationVariables = OperationVariables>(
+export function useGraphQLLazyQuery<TData = unknown, TVariables extends OperationVariables = OperationVariables>(
   query: DocumentNode,
   options?: {
     onCompleted?: (data: TData) => void;
-    onError?: (error: any) => void;
+    onError?: (error: Error) => void;
   }
 ) {
   return useLazyQuery<TData, TVariables>(query, {
@@ -64,12 +64,12 @@ export function useGraphQLLazyQuery<TData = any, TVariables extends OperationVar
 /**
  * Subscription hook for real-time updates
  */
-export function useGraphQLSubscription<TData = any, TVariables extends OperationVariables = OperationVariables>(
+export function useGraphQLSubscription<TData = unknown, TVariables extends OperationVariables = OperationVariables>(
   subscription: DocumentNode,
   options?: {
     variables?: TVariables;
     onData?: (data: TData) => void;
-    onError?: (error: any) => void;
+    onError?: (error: Error) => void;
   }
 ) {
   return useSubscription<TData, TVariables>(subscription, {

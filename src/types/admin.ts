@@ -1,3 +1,5 @@
+import * as React from "react";
+
 export interface User {
   id: string;
   name: string;
@@ -12,7 +14,7 @@ export interface SystemMetric {
   label: string;
   value: string;
   status: "healthy" | "warning" | "critical";
-  icon: any;
+  icon: React.ComponentType<{ className?: string }>;
   trend?: string;
 }
 

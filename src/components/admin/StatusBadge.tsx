@@ -7,7 +7,7 @@ interface StatusBadgeProps {
 }
 
 export function StatusBadge({ status }: StatusBadgeProps) {
-  const variants: Record<string, { variant: any; label: string }> = {
+  const variants: Record<string, { variant: "default" | "secondary" | "destructive" | "outline"; label: string }> = {
     active: { variant: "default", label: "Active" },
     inactive: { variant: "secondary", label: "Inactive" },
     suspended: { variant: "destructive", label: "Suspended" },
@@ -18,7 +18,7 @@ export function StatusBadge({ status }: StatusBadgeProps) {
     error: { variant: "destructive", label: "Error" },
   };
   
-  const config = variants[status] || { variant: "secondary", label: status };
+  const config = variants[status] || { variant: "secondary" as const, label: status };
   return <Badge variant={config.variant}>{config.label}</Badge>;
 }
 

@@ -185,7 +185,7 @@ describe('StorageService', () => {
 
     it('should handle errors gracefully', () => {
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-      const circularObj = {} as any;
+      const circularObj: Record<string, unknown> = {};
       circularObj.self = circularObj;
 
       storageService.setObject('circular', circularObj);

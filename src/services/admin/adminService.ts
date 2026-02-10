@@ -246,7 +246,7 @@ class AdminService {
   /**
    * Update system settings
    */
-  async updateSystemSettings(settings: Record<string, any>): Promise<void> {
+  async updateSystemSettings(settings: Record<string, unknown>): Promise<void> {
     // In production:
     // await apiClient.put('/admin/system/settings', settings);
 
@@ -262,7 +262,7 @@ class AdminService {
   /**
    * Get system settings
    */
-  async getSystemSettings(): Promise<Record<string, any>> {
+  async getSystemSettings(): Promise<Record<string, unknown>> {
     // In production:
     // return await apiClient.get('/admin/system/settings');
 

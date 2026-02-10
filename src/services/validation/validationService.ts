@@ -46,8 +46,8 @@ class ValidationService {
     if (!phone) return false;
     
     // Simple validation - accepts various formats
-    const phoneRegex = /^[\d\s\-\+\(\)]+$/;
-    const cleaned = phone.replace(/[\s\-\(\)]/g, '');
+    const phoneRegex = /^[\d\s\-+()]+$/;
+    const cleaned = phone.replace(/[\s\-()]/g, '');
     
     return phoneRegex.test(phone) && cleaned.length >= 10;
   }
@@ -216,9 +216,9 @@ class ValidationService {
   /**
    * Create validation schema helper
    */
-  validate<T extends Record<string, any>>(
+  validate<T extends Record<string, unknown>>(
     data: T,
-    rules: Record<keyof T, (value: any) => boolean | string>
+    rules: Record<keyof T, (value: unknown) => boolean | string>
   ): { isValid: boolean; errors: Partial<Record<keyof T, string>> } {
     const errors: Partial<Record<keyof T, string>> = {};
     
