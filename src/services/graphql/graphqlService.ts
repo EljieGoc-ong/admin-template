@@ -4,7 +4,14 @@
  */
 
 import { apolloClient, resetApolloCache, refetchActiveQueries } from '@/config/apollo';
-import { ApolloQueryResult, FetchResult, DocumentNode, OperationVariables } from '@apollo/client';
+import type { 
+  ApolloQueryResult, 
+  FetchResult, 
+  DocumentNode, 
+  OperationVariables,
+  ErrorPolicy,
+  QueryOptions
+} from '@apollo/client';
 
 class GraphQLService {
   /**
@@ -13,19 +20,14 @@ class GraphQLService {
   async query<TData = any, TVariables extends OperationVariables = OperationVariables>(
     query: DocumentNode,
     variables?: TVariables,
-    options?: {
-      fetchPolicy?: 'cache-first' | 'cache-and-network' | 'network-only' | 'cache-only' | 'no-cache';
-      errorPolicy?: 'none' | 'ignore' | 'all';
-    }
+    options?: Partial<Omit<QueryOptions<TData, TVariables>, 'query' | 'variables'>>
   ): Promise<ApolloQueryResult<TData>> {
     try {
-      const result = await apolloClient.query<TData, TVariables>({
+      return await apolloClient.query<TData, TVariables>({
         query,
         variables,
         ...options,
-      });
-
-      return result;
+      }) as ApolloQueryResult<TData>;
     } catch (error) {
       console.error('GraphQL Query Error:', error);
       throw error;
@@ -41,7 +43,7 @@ class GraphQLService {
     options?: {
       refetchQueries?: string[] | DocumentNode[];
       awaitRefetchQueries?: boolean;
-      errorPolicy?: 'none' | 'ignore' | 'all';
+      errorPolicy?: ErrorPolicy;
     }
   ): Promise<FetchResult<TData>> {
     try {
