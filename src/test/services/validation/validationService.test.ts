@@ -45,60 +45,45 @@ describe('ValidationService', () => {
   });
 
   describe('isStrongPassword', () => {
-    it('should return true for strong passwords', () => {
-      expect(validationService.isStrongPassword('Password123')).toBe(true);
-      expect(validationService.isStrongPassword('MyP@ssw0rd')).toBe(true);
-      expect(validationService.isStrongPassword('Str0ngPass')).toBe(true);
-    });
-
-    it('should return false for passwords without uppercase', () => {
-      expect(validationService.isStrongPassword('password123')).toBe(false);
-    });
-
-    it('should return false for passwords without lowercase', () => {
-      expect(validationService.isStrongPassword('PASSWORD123')).toBe(false);
-    });
-
-    it('should return false for passwords without numbers', () => {
-      expect(validationService.isStrongPassword('PasswordABC')).toBe(false);
-    });
-
-    it('should return false for passwords shorter than 8 characters', () => {
-      expect(validationService.isStrongPassword('Pass12')).toBe(false);
-    });
-
-    it('should return false for empty passwords', () => {
-      expect(validationService.isStrongPassword('')).toBe(false);
+    it.each([
+      ['Password123', true, 'valid strong password'],
+      ['MyP@ssw0rd', true, 'password with special characters'],
+      ['Str0ngPass', true, 'password with mixed case and numbers'],
+      ['password123', false, 'password without uppercase'],
+      ['PASSWORD123', false, 'password without lowercase'],
+      ['PasswordABC', false, 'password without numbers'],
+      ['Pass12', false, 'password shorter than 8 characters'],
+      ['', false, 'empty password'],
+    ])('should return %s for %s', (password, expected) => {
+      expect(validationService.isStrongPassword(password)).toBe(expected);
     });
   });
 
   describe('isValidPhoneNumber', () => {
-    it('should return true for valid phone numbers', () => {
-      expect(validationService.isValidPhoneNumber('1234567890')).toBe(true);
-      expect(validationService.isValidPhoneNumber('123-456-7890')).toBe(true);
-      expect(validationService.isValidPhoneNumber('(123) 456-7890')).toBe(true);
-      expect(validationService.isValidPhoneNumber('+1 234 567 8900')).toBe(true);
-    });
-
-    it('should return false for invalid phone numbers', () => {
-      expect(validationService.isValidPhoneNumber('123')).toBe(false);
-      expect(validationService.isValidPhoneNumber('abcdefghij')).toBe(false);
-      expect(validationService.isValidPhoneNumber('')).toBe(false);
+    it.each([
+      ['1234567890', true, 'plain 10-digit number'],
+      ['123-456-7890', true, 'number with dashes'],
+      ['(123) 456-7890', true, 'number with parentheses'],
+      ['+1 234 567 8900', true, 'international format'],
+      ['123', false, 'too short'],
+      ['abcdefghij', false, 'non-numeric'],
+      ['', false, 'empty string'],
+    ])('should return %s for %s', (phone, expected) => {
+      expect(validationService.isValidPhoneNumber(phone)).toBe(expected);
     });
   });
 
   describe('isValidUrl', () => {
-    it('should return true for valid URLs', () => {
-      expect(validationService.isValidUrl('https://example.com')).toBe(true);
-      expect(validationService.isValidUrl('http://example.com')).toBe(true);
-      expect(validationService.isValidUrl('https://example.com/path?query=1')).toBe(true);
-      expect(validationService.isValidUrl('ftp://files.example.com')).toBe(true);
-    });
-
-    it('should return false for invalid URLs', () => {
-      expect(validationService.isValidUrl('not-a-url')).toBe(false);
-      expect(validationService.isValidUrl('example.com')).toBe(false);
-      expect(validationService.isValidUrl('')).toBe(false);
+    it.each([
+      ['https://example.com', true, 'HTTPS URL'],
+      ['http://example.com', true, 'HTTP URL'],
+      ['https://example.com/path?query=1', true, 'URL with path and query'],
+      ['ftp://files.example.com', true, 'FTP URL'],
+      ['not-a-url', false, 'invalid URL'],
+      ['example.com', false, 'URL without protocol'],
+      ['', false, 'empty string'],
+    ])('should return %s for %s', (url, expected) => {
+      expect(validationService.isValidUrl(url)).toBe(expected);
     });
   });
 
@@ -245,36 +230,34 @@ describe('ValidationService', () => {
   });
 
   describe('isValidHexColor', () => {
-    it('should return true for valid hex color codes', () => {
-      expect(validationService.isValidHexColor('#FFFFFF')).toBe(true);
-      expect(validationService.isValidHexColor('#000000')).toBe(true);
-      expect(validationService.isValidHexColor('#abc')).toBe(true);
-      expect(validationService.isValidHexColor('#123456')).toBe(true);
-    });
-
-    it('should return false for invalid hex color codes', () => {
-      expect(validationService.isValidHexColor('FFFFFF')).toBe(false); // Missing #
-      expect(validationService.isValidHexColor('#GGGGGG')).toBe(false); // Invalid characters
-      expect(validationService.isValidHexColor('#12')).toBe(false); // Too short
-      expect(validationService.isValidHexColor('#1234567')).toBe(false); // Too long
-      expect(validationService.isValidHexColor('')).toBe(false);
+    it.each([
+      ['#FFFFFF', true, '6-digit hex white'],
+      ['#000000', true, '6-digit hex black'],
+      ['#abc', true, '3-digit hex shorthand'],
+      ['#123456', true, '6-digit hex color'],
+      ['FFFFFF', false, 'missing # prefix'],
+      ['#GGGGGG', false, 'invalid characters'],
+      ['#12', false, 'too short'],
+      ['#1234567', false, 'too long'],
+      ['', false, 'empty string'],
+    ])('should return %s for %s', (color, expected) => {
+      expect(validationService.isValidHexColor(color)).toBe(expected);
     });
   });
 
   describe('isValidIPv4', () => {
-    it('should return true for valid IPv4 addresses', () => {
-      expect(validationService.isValidIPv4('192.168.1.1')).toBe(true);
-      expect(validationService.isValidIPv4('127.0.0.1')).toBe(true);
-      expect(validationService.isValidIPv4('255.255.255.255')).toBe(true);
-      expect(validationService.isValidIPv4('0.0.0.0')).toBe(true);
-    });
-
-    it('should return false for invalid IPv4 addresses', () => {
-      expect(validationService.isValidIPv4('256.256.256.256')).toBe(false); // Out of range
-      expect(validationService.isValidIPv4('192.168.1')).toBe(false); // Incomplete
-      expect(validationService.isValidIPv4('192.168.1.1.1')).toBe(false); // Too many octets
-      expect(validationService.isValidIPv4('abc.def.ghi.jkl')).toBe(false); // Non-numeric
-      expect(validationService.isValidIPv4('')).toBe(false);
+    it.each([
+      ['192.168.1.1', true, 'private IP'],
+      ['127.0.0.1', true, 'localhost'],
+      ['255.255.255.255', true, 'broadcast address'],
+      ['0.0.0.0', true, 'zero address'],
+      ['256.256.256.256', false, 'out of range'],
+      ['192.168.1', false, 'incomplete'],
+      ['192.168.1.1.1', false, 'too many octets'],
+      ['abc.def.ghi.jkl', false, 'non-numeric'],
+      ['', false, 'empty string'],
+    ])('should return %s for %s', (ip, expected) => {
+      expect(validationService.isValidIPv4(ip)).toBe(expected);
     });
   });
 

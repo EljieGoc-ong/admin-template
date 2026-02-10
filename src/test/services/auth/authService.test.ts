@@ -46,46 +46,20 @@ describe('AuthService', () => {
       expect(error).toBeNull();
     });
 
-    it('should return error when email is missing', () => {
-      const credentials: LoginCredentials = {
-        email: '',
-        password: 'password123',
-      };
+    it.each([
+      ['', 'password123', 'Please fill in all fields.', undefined, 'missing email'],
+      ['test@example.com', '', 'Please fill in all fields.', undefined, 'missing password'],
+      ['invalid-email', 'password123', 'Please enter a valid email address.', 'email', 'invalid email format'],
+      ['test@example.com', '12345', 'Password must be at least 6 characters.', 'password', 'short password'],
+    ])('should return error for %s', (email, password, expectedMessage, expectedField) => {
+      const credentials: LoginCredentials = { email, password };
       const error = authService.validateLoginCredentials(credentials);
+      
       expect(error).not.toBeNull();
-      expect(error?.message).toBe('Please fill in all fields.');
-    });
-
-    it('should return error when password is missing', () => {
-      const credentials: LoginCredentials = {
-        email: 'test@example.com',
-        password: '',
-      };
-      const error = authService.validateLoginCredentials(credentials);
-      expect(error).not.toBeNull();
-      expect(error?.message).toBe('Please fill in all fields.');
-    });
-
-    it('should return error for invalid email format', () => {
-      const credentials: LoginCredentials = {
-        email: 'invalid-email',
-        password: 'password123',
-      };
-      const error = authService.validateLoginCredentials(credentials);
-      expect(error).not.toBeNull();
-      expect(error?.message).toBe('Please enter a valid email address.');
-      expect(error?.field).toBe('email');
-    });
-
-    it('should return error for password shorter than minimum length', () => {
-      const credentials: LoginCredentials = {
-        email: 'test@example.com',
-        password: '12345',
-      };
-      const error = authService.validateLoginCredentials(credentials);
-      expect(error).not.toBeNull();
-      expect(error?.message).toBe('Password must be at least 6 characters.');
-      expect(error?.field).toBe('password');
+      expect(error?.message).toBe(expectedMessage);
+      if (expectedField) {
+        expect(error?.field).toBe(expectedField);
+      }
     });
   });
 
@@ -100,57 +74,21 @@ describe('AuthService', () => {
       expect(error).toBeNull();
     });
 
-    it('should return error when email is missing', () => {
-      const credentials: SignupCredentials = {
-        email: '',
-        password: 'Password123',
-      };
+    it.each([
+      ['', 'Password123', 'Please fill in all fields.', undefined, 'missing email'],
+      ['test@example.com', '', 'Please fill in all fields.', undefined, 'missing password'],
+      ['invalid-email', 'Password123', 'Please enter a valid email address.', 'email', 'invalid email format'],
+      ['test@example.com', '12345', 'Password must be at least 6 characters.', 'password', 'short password'],
+      ['test@example.com', 'password', 'Password should contain uppercase, lowercase, and numbers.', 'password', 'weak password'],
+    ])('should return error for %s', (email, password, expectedMessage, expectedField) => {
+      const credentials: SignupCredentials = { email, password };
       const error = authService.validateSignupCredentials(credentials);
+      
       expect(error).not.toBeNull();
-      expect(error?.message).toBe('Please fill in all fields.');
-    });
-
-    it('should return error when password is missing', () => {
-      const credentials: SignupCredentials = {
-        email: 'test@example.com',
-        password: '',
-      };
-      const error = authService.validateSignupCredentials(credentials);
-      expect(error).not.toBeNull();
-      expect(error?.message).toBe('Please fill in all fields.');
-    });
-
-    it('should return error for invalid email format', () => {
-      const credentials: SignupCredentials = {
-        email: 'invalid-email',
-        password: 'Password123',
-      };
-      const error = authService.validateSignupCredentials(credentials);
-      expect(error).not.toBeNull();
-      expect(error?.message).toBe('Please enter a valid email address.');
-      expect(error?.field).toBe('email');
-    });
-
-    it('should return error for password shorter than minimum length', () => {
-      const credentials: SignupCredentials = {
-        email: 'test@example.com',
-        password: '12345',
-      };
-      const error = authService.validateSignupCredentials(credentials);
-      expect(error).not.toBeNull();
-      expect(error?.message).toBe('Password must be at least 6 characters.');
-      expect(error?.field).toBe('password');
-    });
-
-    it('should return error for weak password', () => {
-      const credentials: SignupCredentials = {
-        email: 'test@example.com',
-        password: 'password',
-      };
-      const error = authService.validateSignupCredentials(credentials);
-      expect(error).not.toBeNull();
-      expect(error?.message).toBe('Password should contain uppercase, lowercase, and numbers.');
-      expect(error?.field).toBe('password');
+      expect(error?.message).toBe(expectedMessage);
+      if (expectedField) {
+        expect(error?.field).toBe(expectedField);
+      }
     });
   });
 
