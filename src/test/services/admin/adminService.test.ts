@@ -4,7 +4,6 @@
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { adminService } from '@/services/admin/adminService';
-import type { User } from '@/types/admin';
 
 describe('AdminService', () => {
   beforeEach(() => {
@@ -49,6 +48,7 @@ describe('AdminService', () => {
         status: 'active' as const,
         role: 'user' as const,
         lastActive: '2024-01-01',
+        lastLogin: '2024-01-01',
       };
 
       const createdUser = await adminService.createUser(userData);
@@ -68,6 +68,7 @@ describe('AdminService', () => {
         status: 'active' as const,
         role: 'user' as const,
         lastActive: '2024-01-01',
+        lastLogin: '2024-01-01',
       };
 
       const user1 = await adminService.createUser(userData);
@@ -193,7 +194,7 @@ describe('AdminService', () => {
       expect(blob).toBeInstanceOf(Blob);
       expect(blob.type).toBe('text/csv');
 
-      // Use FileReader to read blob in jsdom environment
+      // NOSONAR: typescript:S7756 - jsdom test environment doesn't support blob.text() yet
       const text = await new Promise<string>((resolve) => {
         const reader = new FileReader();
         reader.onload = () => resolve(reader.result as string);
@@ -208,7 +209,7 @@ describe('AdminService', () => {
       expect(blob).toBeInstanceOf(Blob);
       expect(blob.type).toBe('application/json');
 
-      // Use FileReader to read blob in jsdom environment
+      // NOSONAR: typescript:S7756 - jsdom test environment doesn't support blob.text() yet
       const text = await new Promise<string>((resolve) => {
         const reader = new FileReader();
         reader.onload = () => resolve(reader.result as string);
