@@ -24,7 +24,7 @@ export default function Dashboard() {
               <s.icon className={`h-4 w-4 ${s.accent}`} />
             </CardHeader>
             <CardContent>
-              <p className="text-xl font-bold">{s.value}</p>
+              <p className="text-2xl font-bold">{s.value}</p>
             </CardContent>
           </Card>
         ))}
