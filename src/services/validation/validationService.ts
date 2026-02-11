@@ -113,7 +113,7 @@ class ValidationService {
     
     // Use bounded quantifier to prevent catastrophic backtracking
     // Limit tag content to 1000 characters max
-    return value.replace(/<[^>]{0,1000}>/g, '');
+    return value.replaceAll(/<[^>]{0,1000}>/g, '');
   }
 
   /**
