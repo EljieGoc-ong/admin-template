@@ -1,0 +1,117 @@
+# Project AI Rules - Admin Template
+
+## Project Context
+This is a React + TypeScript admin template with GraphQL integration, RBAC permissions, and modern UI components using Tailwind CSS and shadcn/ui. All detailed standards are located in the `.standards/` directory.
+
+## Standards Reference
+Before making changes, ALWAYS review relevant standards in `.standards/`:
+- **Code Style**: `.standards/code_style_standards.md` - TypeScript/React conventions
+- **API**: `.standards/api_standards.md` - HTTP handlers, responses, authentication
+- **Documentation**: `.standards/documentation_standards.md` - JSDoc, README guidelines
+- **Testing**: `.standards/testing_standards.md` - Frontend/unit testing guidance
+- **Git Workflow**: `.standards/git_workflow_standards.md` - Commits, branches, PRs
+- **Database**: `.standards/database_standards.md` - Schema and data modeling
+- **Models**: `.standards/model_design_standards.md` - Type definitions
+- **Feature Flags**: `.standards/feature_flags.md` - Feature flag patterns
+
+## Additional Rules
+This project also includes organized rules in `.cursor/rules/` directory:
+- Project-specific rules (code-style, api, git-workflow, testing, documentation)
+- RBAC & permission patterns (rbac-permissions, graphql)
+- Styling conventions (styling)
+- Performance optimization rules (js-*, rendering-*, rerender-*, bundle-*, etc.)
+
+These rules are automatically detected by Cursor and work alongside this file.
+
+## Core Development Rules
+
+### TypeScript & React
+1. **ALWAYS** use functional components with hooks
+2. **ALWAYS** use `import type` for type-only imports
+3. **ALWAYS** keep components small, focused, and reusable
+4. **NEVER** use `any` type without strong justification
+5. **NEVER** create overly complex nested components
+6. Use explicit types or `unknown` instead of `any`
+7. Keep effects minimal and well-scoped
+8. Avoid derived state; compute from props when possible
+
+### Naming Conventions
+- Components: `PascalCase` (e.g., `UserProfile.tsx`)
+- Hooks: `useSomething` (e.g., `usePermission.tsx`)
+- Component Files: `PascalCase.tsx`
+- Utility Files: `camelCase.ts`
+- Services: `camelCase.ts` in appropriate service folders
+
+### API & Data Handling
+1. **ALWAYS** use consistent response shapes:
+   - Success: `{ data: ..., message?: string }`
+   - Error: `{ error: { code, message, details? } }`
+2. **ALWAYS** document request/response payloads
+3. **ALWAYS** use appropriate HTTP status codes
+4. **NEVER** log secrets or raw tokens
+5. **NEVER** ship breaking API changes without versioning
+6. Use JSON for request/response bodies
+7. Keep URLs noun-based (e.g., `/users`, `/permissions`)
+
+### Documentation
+1. **ALWAYS** use JSDoc for exported utilities and shared modules
+2. **ALWAYS** keep README accurate with current setup steps
+3. **ALWAYS** document non-obvious UI state or data transformations
+4. **NEVER** leave complex logic undocumented
+5. Update relevant docs when changing functionality
+
+### Git & Version Control
+1. **ALWAYS** use conventional commit format: `type(scope): message`
+   - Examples: `feat(auth):`, `fix(ui):`, `docs:`, `refactor(rbac):`
+2. **ALWAYS** create feature branches: `type/description`
+   - Examples: `feature/user-profile`, `bugfix/permission-check`
+3. **ALWAYS** run tests and linting before committing
+4. **NEVER** commit directly to main/master
+5. **NEVER** commit sensitive information
+6. **NEVER** mix unrelated changes in one commit
+7. Keep PRs focused and under 400 lines when possible
+
+### Testing
+1. **ALWAYS** add tests for critical UI logic and utilities
+2. **ALWAYS** run lint and validation checks before committing
+3. Keep tests deterministic - avoid network calls in unit tests
+4. Cover critical user flows with component tests
+
+### Styling
+- Use Tailwind CSS classes consistently with existing patterns
+- Follow shadcn/ui component conventions
+- Avoid inline styles unless absolutely necessary
+- Maintain responsive design patterns
+
+### RBAC & Permissions
+- Always check permissions before rendering protected UI
+- Use `usePermission` hook for permission checks
+- Follow existing RBAC patterns in `contexts/RBACContext.tsx`
+- Document required permissions for new features
+
+### GraphQL Integration
+- Use Apollo Client hooks for data fetching
+- Follow patterns in `config/apollo.ts` and `services/graphql/`
+- Handle loading, error, and success states consistently
+- Use proper TypeScript types for GraphQL responses
+
+## Code Review Checklist
+Before marking work as complete:
+- [ ] All tests pass
+- [ ] Linting passes (ESLint)
+- [ ] TypeScript compilation succeeds with no errors
+- [ ] No `any` types introduced without justification
+- [ ] Relevant documentation updated
+- [ ] Git commit follows conventional format
+- [ ] Standards from `.standards/` directory followed
+- [ ] No sensitive data or secrets in code
+
+## When Making Changes
+1. Read relevant standards from `.standards/` directory first
+2. Follow established patterns in existing codebase
+3. Cite which standards were applied
+4. Explain any necessary deviations from standards
+5. Run verification commands after generating code
+
+## References
+See `.standards/ai_standards.md` for detailed AI agent guidelines and effective prompt examples.
