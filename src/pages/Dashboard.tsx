@@ -3,7 +3,7 @@ import { Users, Activity, TrendingUp, Clock } from "lucide-react";
 
 export default function Dashboard() {
   const stats = [
-    { label: "Total Users", value: "2,643", icon: Users, accent: "text-primary" },
+    { label: "Total Users", value: "2,543", icon: Users, accent: "text-primary" },
     { label: "Active Sessions", value: "127", icon: Activity, accent: "text-green-500" },
     { label: "Growth", value: "+12.5%", icon: TrendingUp, accent: "text-blue-400" },
     { label: "Avg. Session", value: "4m 32s", icon: Clock, accent: "text-amber-400" },
@@ -24,7 +24,7 @@ export default function Dashboard() {
               <s.icon className={`h-4 w-4 ${s.accent}`} />
             </CardHeader>
             <CardContent>
-              <p className="text-2xl font-bold">{s.value}</p>
+              <p className="text-xl font-bold">{s.value}</p>
             </CardContent>
           </Card>
         ))}

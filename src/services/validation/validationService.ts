@@ -47,7 +47,7 @@ class ValidationService {
     
     // Simple validation - accepts various formats
     const phoneRegex = /^[\d\s\-+()]+$/;
-    const cleaned = phone.replace(/[\s\-()]/g, '');
+    const cleaned = phone.replaceAll(/[\s\-()]/g, '');
     
     return phoneRegex.test(phone) && cleaned.length >= 10;
   }
