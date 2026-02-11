@@ -23,6 +23,34 @@ This project also includes organized rules in `.cursor/rules/` directory:
 
 These rules are automatically detected by Cursor and work alongside this file.
 
+## Cursor Rules for Direct Communication
+
+### Communication Style
+- Be direct and precise. No unnecessary verbosity.
+- Skip lengthy recaps unless specifically requested.
+- Focus on actionable solutions and clear answers.
+- Use bullet points and concise explanations.
+- Avoid flowery language or excessive context.
+
+### Code Responses
+- Provide code solutions directly without extensive explanations.
+- Use inline comments for complex logic only.
+- Skip "here's what I did" narratives unless debugging.
+- Focus on the solution, not the process.
+
+### Token Efficiency
+- Prioritize brevity while maintaining clarity.
+- Avoid repeating information already in context.
+- Use shorthand when appropriate (e.g., "see above" instead of re-explaining).
+- Skip unnecessary pleasantries or verbose introductions.
+
+### When to Expand
+Only provide detailed explanations when:
+- Debugging complex issues
+- Explaining architectural decisions
+- Teaching new concepts
+- User explicitly requests more detail
+
 ## Core Development Rules
 
 ### TypeScript & React
